@@ -2,6 +2,7 @@ package com.ayberk.composefood
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -49,6 +50,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ayberk.composefood.Viewmodel.AnasayfaViewModel
+import com.ayberk.composefood.Viewmodel.AnasayfaViewModelFactory
 import com.ayberk.composefood.entity.Yemekler
 import com.ayberk.composefood.ui.theme.ComposeFoodTheme
 import com.google.gson.Gson
@@ -92,8 +94,10 @@ fun SayfaGecisleri(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Anasayfa(navController : NavController){
-
-    val viewModel:AnasayfaViewModel = viewModel()
+    val context = LocalContext.current
+    val viewModel:AnasayfaViewModel = viewModel(
+        factory = AnasayfaViewModelFactory(context.applicationContext as Application)
+    )
     val yemekListesi = viewModel.yemeklerListesi.observeAsState(listOf())
 
     Scaffold (
@@ -127,7 +131,7 @@ fun Anasayfa(navController : NavController){
                              ) {
                                  val activity = (LocalContext.current as Activity)
                                  Image(bitmap = ImageBitmap.imageResource(id = activity.resources.getIdentifier(
-                                      yemek.yemek_resim,"drawable",activity.packageName
+                                      yemek.yemek_resim_adi,"drawable",activity.packageName
                                  )),
                                      contentDescription = "", modifier = Modifier.size(100.dp))
                                 Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()

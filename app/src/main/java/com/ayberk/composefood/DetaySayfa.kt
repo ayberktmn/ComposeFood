@@ -52,7 +52,7 @@ fun DetaySayfa(yemek: Yemekler){
             ){
                 val activity = (LocalContext.current as Activity)
                 Image(bitmap = ImageBitmap.imageResource(id = activity.resources.getIdentifier(
-                    yemek.yemek_resim,"drawable",activity.packageName
+                    yemek.yemek_resim_adi,"drawable",activity.packageName
                 )),
                     contentDescription = "", modifier = Modifier.size(100.dp))
                 Text(text = "${yemek.yemek_adi}", color = Color.Black, fontSize = 50.sp)
