@@ -51,6 +51,7 @@ fun DetaySayfa(yemek: Yemekler){
                     titleContentColor = colorResource(id = R.color.white),
                 )
             )
+
         }, content = {
             Column (
               modifier = Modifier.fillMaxSize(),
