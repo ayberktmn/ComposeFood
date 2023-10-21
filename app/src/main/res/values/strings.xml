@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ComposeFood</string>
+    <string name="title_activity_detay_sayfa">DetaySayfa</string>
 </resources>
