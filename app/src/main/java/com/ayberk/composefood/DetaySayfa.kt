@@ -11,12 +11,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,12 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ayberk.composefood.entity.Yemekler
 import com.ayberk.composefood.ui.theme.ComposeFoodTheme
+import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetaySayfa(yemek: Yemekler){
-
+    var yuklenmeTamamlandi by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -51,11 +58,15 @@ fun DetaySayfa(yemek: Yemekler){
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 val activity = (LocalContext.current as Activity)
+                if (!yuklenmeTamamlandi) {
+                    // Yükleme işlemi devam ediyor
+                    CircularProgressIndicator()
+                } else {
                 Image(bitmap = ImageBitmap.imageResource(id = activity.resources.getIdentifier(
                     yemek.yemek_resim_adi,"drawable",activity.packageName
                 )),
                     contentDescription = "", modifier = Modifier.size(100.dp))
-                Text(text = "${yemek.yemek_adi}", color = Color.Black, fontSize = 50.sp)
+                Text(text = yemek.yemek_adi, color = Color.Black, fontSize = 50.sp)
                 Text(text = "${yemek.yemek_fiyat} ₺", color = Color.Blue, fontSize = 50.sp)
                 Button(onClick = {
                     Log.e("Yemek", "${yemek.yemek_adi} Siparişi verildi")
@@ -69,7 +80,19 @@ fun DetaySayfa(yemek: Yemekler){
                         Text(text = "Sipariş Ver")
                 }
             }
+        }
         })
+
+    LaunchedEffect(Unit) {
+        // Yükleme işlemi burada gerçekleşir
+        // Örnek: Yükleme işlemi 3 saniye sürsün
+        delay(1000)
+
+        // Yükleme işlemi tamamlandığında göstergenin kapanmasını sağlar
+        yuklenmeTamamlandi = true
+
+
+    }
 }
 
 @Preview(showBackground = true)
