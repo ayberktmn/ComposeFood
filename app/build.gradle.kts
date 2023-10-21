@@ -68,4 +68,9 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation("com.google.code.gson:gson:2.9.1")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0-alpha08")
+
 }

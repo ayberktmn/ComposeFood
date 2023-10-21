@@ -2,22 +2,16 @@ package com.ayberk.composefood
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.res.Resources.Theme
-import android.graphics.drawable.ColorStateListDrawable
 import android.os.Bundle
-import android.view.WindowInsets.Side
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,29 +25,30 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.contentColorFor
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.ayberk.composefood.entity.Yemekler
 import com.ayberk.composefood.ui.theme.ComposeFoodTheme
+import com.google.gson.Gson
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +58,7 @@ class MainActivity : ComponentActivity() {
             ComposeFoodTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colorScheme.background){
-                    Anasayfa()
+                        SayfaGecisleri()
                 }
             }
         }
@@ -73,7 +68,27 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Anasayfa(){
+fun SayfaGecisleri(){
+        val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "anasayfa"){
+            composable("anasayfa"){
+                Anasayfa(navController = navController)
+            }
+            composable("detay_sayfa/{yemek}", arguments = listOf(
+                navArgument("yemek"){type = NavType.StringType}
+            )){
+                val json = it.arguments?.getString("yemek")
+                val yemek = Gson().fromJson(json, Yemekler::class.java)
+                DetaySayfa(yemek = yemek)
+
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Anasayfa(navController : NavController){
 
     val yemekListesi = remember { mutableStateListOf<Yemekler>() }
 
@@ -92,10 +107,7 @@ fun Anasayfa(){
         yemekListesi.add(y4)
         yemekListesi.add(y5)
         yemekListesi.add(y6)
-
-
     }
-
 
     Scaffold (
         topBar = {
@@ -119,7 +131,8 @@ fun Anasayfa(){
                             .padding(all = 5.dp)
                             .fillMaxWidth()){
                             Row(modifier = Modifier.clickable {
-
+                                val yemekJson = Gson().toJson(yemek)
+                                navController.navigate("detay_sayfa/$yemekJson")
                             }) {
                              Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                                  .padding(all = 10.dp)
@@ -135,7 +148,8 @@ fun Anasayfa(){
                                 ){
                                     Column(
                                         verticalArrangement =  Arrangement.SpaceEvenly,
-                                        modifier = Modifier.fillMaxHeight()
+                                        modifier = Modifier
+                                            .fillMaxHeight()
                                             .padding(start = 10.dp)
                                     ) {
                                         Text(text = yemek.yemek_adi, fontSize = 20.sp)
@@ -159,6 +173,6 @@ fun Anasayfa(){
 @Composable
 fun GreetingPreview() {
     ComposeFoodTheme {
-        Anasayfa()
+
     }
 }
