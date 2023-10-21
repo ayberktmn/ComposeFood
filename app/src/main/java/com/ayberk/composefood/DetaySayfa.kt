@@ -59,7 +59,7 @@ fun DetaySayfa(yemek: Yemekler){
                 Text(text = "${yemek.yemek_fiyat} ₺", color = Color.Blue, fontSize = 50.sp)
                 Button(onClick = {
                     Log.e("Yemek", "${yemek.yemek_adi} Siparişi verildi")
-                    Toast.makeText(activity,"Sipariş verildi",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity,"${yemek.yemek_adi} Siparişi verildi",Toast.LENGTH_SHORT).show()
                 },
                     modifier = Modifier.size(250.dp,50.dp),
                     colors = ButtonDefaults.buttonColors(

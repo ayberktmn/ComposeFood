@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,12 +41,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.ayberk.composefood.Viewmodel.AnasayfaViewModel
 import com.ayberk.composefood.entity.Yemekler
 import com.ayberk.composefood.ui.theme.ComposeFoodTheme
 import com.google.gson.Gson
@@ -90,24 +93,8 @@ fun SayfaGecisleri(){
 @Composable
 fun Anasayfa(navController : NavController){
 
-    val yemekListesi = remember { mutableStateListOf<Yemekler>() }
-
-    LaunchedEffect(key1 = true){
-
-        val y1= Yemekler(1,"Köfte","kofte",55)
-        val y2= Yemekler(1,"Ayran","ayran",15)
-        val y3= Yemekler(1,"Fanta","fanta",20)
-        val y4= Yemekler(1,"Makarna","makarna",40)
-        val y5= Yemekler(1,"Kadayıf","kadayif",35)
-        val y6= Yemekler(1,"Baklava","baklava",45)
-
-        yemekListesi.add(y1)
-        yemekListesi.add(y2)
-        yemekListesi.add(y3)
-        yemekListesi.add(y4)
-        yemekListesi.add(y5)
-        yemekListesi.add(y6)
-    }
+    val viewModel:AnasayfaViewModel = viewModel()
+    val yemekListesi = viewModel.yemeklerListesi.observeAsState(listOf())
 
     Scaffold (
         topBar = {
@@ -124,9 +111,9 @@ fun Anasayfa(navController : NavController){
                 modifier = Modifier.padding(top = 70.dp)
             ){
                 items (
-                    count =yemekListesi.count(),
+                    count =yemekListesi.value!!.count(),
                     itemContent = {
-                        val yemek = yemekListesi[it]
+                        val yemek = yemekListesi.value!![it]
                         Card (modifier = Modifier
                             .padding(all = 5.dp)
                             .fillMaxWidth()){
