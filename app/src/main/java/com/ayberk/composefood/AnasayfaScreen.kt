@@ -3,6 +3,9 @@ package com.ayberk.composefood
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
+import android.os.Bundle
+import android.view.View
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +25,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +50,7 @@ import com.ayberk.composefood.Viewmodel.AnasayfaViewModel
 import com.ayberk.composefood.Viewmodel.AnasayfaViewModelFactory
 import com.google.gson.Gson
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +60,11 @@ fun Anasayfa(navController : NavController){
         factory = AnasayfaViewModelFactory(context.applicationContext as Application)
     )
     val yemekListesi = viewModel.yemeklerListesi.observeAsState(listOf())
+    var allowBackNavigation by remember { mutableStateOf(true) }
 
+    BackHandler(enabled = allowBackNavigation){
+
+    }
     Scaffold (
         topBar = {
             TopAppBar(
