@@ -65,7 +65,14 @@ fun SayfaGecisleri(){
         )){
             val json = it.arguments?.getString("yemek")
             val yemek = Gson().fromJson(json, Yemekler::class.java)
-            DetaySayfa(yemek = yemek)
+            DetaySayfa(yemek = yemek, navController)
+        }
+         composable("siparis_sayfa/{yemekadi}", arguments = listOf(
+            navArgument("yemekadi"){type = NavType.StringType}
+        )){
+            val json = it.arguments?.getString("yemekadi")
+            val yemekadi = Gson().fromJson(json, Yemekler::class.java)
+            SiparisSayfa(yemekadi = yemekadi.yemek_adi,navController)
         }
     }
 }

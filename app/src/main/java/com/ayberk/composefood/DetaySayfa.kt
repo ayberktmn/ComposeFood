@@ -33,14 +33,17 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import com.ayberk.composefood.entity.Yemekler
 import com.ayberk.composefood.ui.theme.ComposeFoodTheme
+import com.google.gson.Gson
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetaySayfa(yemek: Yemekler){
+fun DetaySayfa(yemek: Yemekler,navController: NavController){
     var yuklenmeTamamlandi by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
@@ -69,17 +72,17 @@ fun DetaySayfa(yemek: Yemekler){
                     contentDescription = "", modifier = Modifier.size(100.dp))
                 Text(text = yemek.yemek_adi, color = Color.Black, fontSize = 50.sp)
                 Text(text = "${yemek.yemek_fiyat} ₺", color = Color.Blue, fontSize = 50.sp)
-                Button(onClick = {
-                    Log.e("Yemek", "${yemek.yemek_adi} Siparişi verildi")
-                    Toast.makeText(activity,"${yemek.yemek_adi} Siparişi verildi",Toast.LENGTH_SHORT).show()
-                },
-                    modifier = Modifier.size(250.dp,50.dp),
-                    colors = ButtonDefaults.buttonColors(
-                           colorResource(id = R.color.anaRenk)
-                      )
+                    Button(onClick = {
+                        val yemekadi = Gson().toJson(yemek)
+                        navController.navigate("siparis_sayfa/$yemekadi")
+                    },
+                        modifier = Modifier.size(250.dp, 50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            colorResource(id = R.color.anaRenk)
+                        )
                     ) {
                         Text(text = "Sipariş Ver")
-                }
+                    }
             }
         }
         })

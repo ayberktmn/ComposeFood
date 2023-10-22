@@ -62,13 +62,14 @@ fun Anasayfa(navController : NavController){
     val yemekListesi = viewModel.yemeklerListesi.observeAsState(listOf())
     var allowBackNavigation by remember { mutableStateOf(true) }
 
-    BackHandler(enabled = allowBackNavigation){
+    BackHandler(enabled = allowBackNavigation){}
 
-    }
-    Scaffold (
+    Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Yemekler") },
+                actions = {
+                },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = colorResource(id = R.color.anaRenk),
                     titleContentColor = colorResource(id = R.color.white),
@@ -100,7 +101,6 @@ fun Anasayfa(navController : NavController){
                                     )),
                                         contentDescription = "", modifier = Modifier.size(100.dp))
                                     Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
-
                                     ){
                                         Column(
                                             verticalArrangement =  Arrangement.SpaceEvenly,
@@ -121,7 +121,6 @@ fun Anasayfa(navController : NavController){
                     }
                 )
             }
-
         }
     )
 }
