@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.navArgument
+import com.airbnb.lottie.LottieAnimationView
 import com.ayberk.composefood.entity.Yemekler
 import com.ayberk.composefood.ui.theme.ComposeFoodTheme
 import com.google.gson.Gson
@@ -89,13 +90,10 @@ fun DetaySayfa(yemek: Yemekler,navController: NavController){
 
     LaunchedEffect(Unit) {
         // Yükleme işlemi burada gerçekleşir
-        // Örnek: Yükleme işlemi 3 saniye sürsün
+        // Örnek: Yükleme işlemi 1 saniye sürsün
         delay(1000)
-
         // Yükleme işlemi tamamlandığında göstergenin kapanmasını sağlar
         yuklenmeTamamlandi = true
-
-
     }
 }
 
