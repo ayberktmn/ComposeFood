@@ -3,8 +3,6 @@ package com.ayberk.composefood
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.os.Bundle
-import android.view.View
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -54,14 +52,13 @@ import com.google.gson.Gson
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Anasayfa(navController : NavController){
+fun Anasayfa(navController:NavController){
     val context = LocalContext.current
     val viewModel: AnasayfaViewModel = viewModel(
         factory = AnasayfaViewModelFactory(context.applicationContext as Application)
     )
     val yemekListesi = viewModel.yemeklerListesi.observeAsState(listOf())
     var allowBackNavigation by remember { mutableStateOf(true) }
-
     BackHandler(enabled = allowBackNavigation){}
 
     Scaffold(

@@ -30,10 +30,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController : NavHostController) {
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isEmailValid by remember { mutableStateOf(true) }
@@ -81,7 +83,8 @@ fun LoginScreen(navController : NavHostController) {
                         isEmailValid = isValidEmail(email) // Email kontrolü burada yapılıyor
                         isPasswordValid = isValidPassword(password)
                         if (isEmailValid && isPasswordValid) {
-                            navController.navigate("anasayfa")
+                           // navController.navigate("anasayfa")
+                            navController.navigate("anasayfa/$email")
                         } else {
                             isShowingEmailError = true
                             isShowingPasswordError = true
@@ -110,8 +113,9 @@ fun LoginScreen(navController : NavHostController) {
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
+
             }
-    }
+}
 
 
 
